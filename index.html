@@ -15,7 +15,7 @@
 @media print{.ideco-policy-modal{position:static;background:#fff}.ideco-policy-sheet{box-shadow:none;max-height:none}#policyClose{display:none}}
 </style></head><body><header><div><small>IDECO PHARMA · ĐỒNG ĐỘI CÙNG BỨT PHÁ</small><h1>THÀNH QUẢ KINH DOANH TUẦN</h1><p>Mỗi đơn hàng là một bước tiến • Mỗi tuần là một cơ hội</p></div><div class="pill" id="syncStatus">Đang kết nối Firebase…</div></header><main><nav class="box controls" style="justify-content:space-between;gap:12px"><div class="controls"><button class="btn" id="tabPublic">🏆 BẢNG CÔNG BỐ</button><button class="btn secondary" id="tabAdmin">⚙️ CÀI ĐẶT QUẢN TRỊ</button></div><span class="muted small">Công bố thưởng tuần · Đồng bộ Firebase Realtime Database</span></nav><div id="publicView">
 <div class="controls" style="justify-content:flex-end;margin-bottom:12px"><button class="btn secondary" id="showPolicy" type="button">📘 QUY ĐỊNH HƯỞNG THƯỞNG</button></div><div class="public-hero"><div><h2>🏆 Bảng thưởng hoa hồng</h2><div class="compact-hint">Kết quả đã công bố · tự đồng bộ Firebase Realtime Database</div></div><div class="compact-hint">Thuốc 1,8% · Không phải thuốc 3,5% (có thể được quản trị điều chỉnh)</div></div>
-<details class="upload-corner" id="uploadCorner"><summary>📤 Nhân viên gửi Excel đơn hàng cuối tuần <span class="compact-hint">Bấm mở biểu mẫu</span></summary><section class="upload-content" id="uploadArea"><h3>Gửi dữ liệu Excel ERP để quản trị duyệt</h3><p class="muted">Nhân viên chọn file Excel xuất từ ERP vào cuối tuần, bấm Gửi chờ duyệt; quản trị sẽ kiểm tra rồi công bố. Hệ thống tự phân tuần thứ Hai–Chủ nhật theo <b>ngày lập đơn</b>, tách đúng tháng ở tuần giao tháng và <b>người hưởng hoa hồng đã phân công</b>, kiểm tra trước khi người phụ trách công bố lên Firebase.</p><div class="file"><h3>1. Chọn Excel danh sách đơn hàng xuất từ ERP</h3><input type="file" id="upload" accept=".xlsx,.xls,.csv"><p class="small muted">Hỗ trợ cột A–W theo mẫu IDECO đã cung cấp. Các mã đơn trùng trong cùng kỳ sẽ được thay thế, không tính đôi.</p></div><div class="controls" style="margin-top:14px"><button class="btn secondary" id="preview" disabled>2. Xem trước & kiểm tra</button><button class="btn" id="submitPending" type="button">3. Gửi Excel chờ quản trị duyệt</button></div><div id="feedback"></div><div class="twrap" id="previewWrap"></div></section></details>
+<details class="upload-corner" id="uploadCorner"><summary>📤 Nhân viên gửi Excel đơn hàng cuối tuần <span class="compact-hint">Bấm mở biểu mẫu</span></summary><section class="upload-content" id="uploadArea"><h3>Gửi dữ liệu Excel ERP để quản trị duyệt</h3><p class="muted"><b>Mỗi lần gửi sẽ tự thay Excel chờ duyệt cũ bằng Excel mới nhất.</b> Nhân viên chọn file Excel xuất từ ERP vào cuối tuần, bấm Gửi chờ duyệt; quản trị sẽ kiểm tra rồi công bố. Hệ thống tự phân tuần thứ Hai–Chủ nhật theo <b>ngày lập đơn</b>, tách đúng tháng ở tuần giao tháng và <b>người hưởng hoa hồng đã phân công</b>, kiểm tra trước khi người phụ trách công bố lên Firebase.</p><div class="file"><h3>1. Chọn Excel danh sách đơn hàng xuất từ ERP</h3><input type="file" id="upload" accept=".xlsx,.xls,.csv"><p class="small muted">Hỗ trợ cột A–W theo mẫu IDECO đã cung cấp. Các mã đơn trùng trong cùng kỳ sẽ được thay thế, không tính đôi.</p></div><div class="controls" style="margin-top:14px"><button class="btn secondary" id="preview" disabled>2. Xem trước & kiểm tra</button><button class="btn" id="submitPending" type="button">3. Gửi Excel chờ quản trị duyệt</button></div><div id="feedback"></div><div class="twrap" id="previewWrap"></div></section></details>
 <section class="box"><div class="compact-filterbar"><div class="compact-filter"><div class="field"><label for="week">Chọn tuần thưởng</label><select id="week"></select></div><div class="field"><label for="period">Kỳ xem</label><select id="period"><option value="week">Theo tuần</option><option value="month">Cả tháng</option></select></div><div class="field"><label for="staff">Nhân viên</label><select id="staff"><option value="">Tất cả nhân viên</option></select></div></div><button class="btn secondary" id="export">⬇ Xuất CSV</button></div></section>
 <div class="compact-summary"><div class="mini"><span>HOA HỒNG THUỐC</span><b id="summaryDrugBonus">0đ</b></div><div class="mini"><span>HOA HỒNG KHÔNG PHẢI THUỐC</span><b id="summaryOtherBonus">0đ</b></div><div class="mini"><span>TỔNG THƯỞNG ĐỒNG ĐỘI</span><b id="summaryTotalBonus">0đ</b></div></div>
 <section class="box compact-table-box"><div class="table-title"><h2 style="margin:0">👥 Danh sách thưởng nhân viên</h2><p class="compact-hint" style="margin:7px 0 0">Chỉ gồm hoa hồng đã công bố; không phải bảng lương và chưa phải tiền đã thanh toán.</p></div><div class="twrap"><table class="compact-table"><thead><tr><th>Nhân viên</th><th class="money">Thưởng thuốc</th><th class="money">Thưởng không phải thuốc</th><th class="money">Tổng thưởng</th></tr></thead><tbody id="people"></tbody></table></div></section>
@@ -78,21 +78,43 @@ function parseFile(wb){let sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.she
 async function fileInput(){let f=$('upload').files[0];if(!f)return;try{if(!window.XLSX)throw Error('Không tải được thư viện Excel. Cần kết nối Internet.');let raw=await f.arrayBuffer();let workbook=XLSX.read(raw,{type:'array',cellDates:true});let parsed=parseFile(workbook);staged=parsed.records;activeFile=f.name;renderStaffChoices();$('preview').disabled=false;$('publish').disabled=true;$('publishHint').textContent='Đã nhận file: '+f.name+'. Đang tính và kiểm tra dữ liệu…';$('feedback').innerHTML=`<div class="ok">Đã đọc ${staged.length} đơn trong ${escape(f.name)}. ${parsed.invalid} dòng không hợp lệ; ${parsed.duplicates} mã đơn trùng trong file.</div>`;$('previewWrap').innerHTML='';preview();}catch(e){$('feedback').textContent='Lỗi đọc file: '+e.message;$('preview').disabled=true}}
 function preview(){if(!staged.length)return;settings={...settings,...readRules()};let eligible=staged.filter(o=>!commissionReason(o,settings)).map(o=>valued(o,settings)),s=summarize(eligible),excluded=staged.length-eligible.length;const mixed=eligible.filter(o=>/thuoc.*my pham|thuoc.*tpbvsk|hang hon hop/i.test(norm(o.customer))).length;let byWeek=[...new Set(eligible.map(o=>monthWeekKey(o.date)))].sort();$('feedback').innerHTML=`<div class="ok"><b>ĐÃ KIỂM TRA DỮ LIỆU:</b> ${staged.length} đơn tải lên, <b>${eligible.length} đơn hợp lệ</b>, loại ${excluded} đơn do chuỗi/chính sách riêng chưa thiết lập/nhân viên. Hoa hồng dự kiến cho các đơn trong file: <b>${money(s.bonus)}</b>. Có ${byWeek.length} tuần, ${new Set(eligible.map(o=>o.staff)).size} nhân viên.</div><div class="warning">Vui lòng đối chiếu cột H có VAT hay chưa, danh sách chuỗi và nhân viên được hưởng trước khi công bố. File chứa đơn của nhiều tuần/tháng sẽ cập nhật các kỳ tương ứng. Nếu sau này có đơn điều chỉnh, tải file ERP mới để cập nhật theo mã đơn.</div>`;$('previewWrap').innerHTML=`<h3>Danh sách đơn bị loại khỏi hoa hồng</h3><div class="twrap"><table><thead><tr><th>Mã</th><th>Khách hàng</th><th>Lý do</th></tr></thead><tbody>${staged.filter(o=>!!commissionReason(o,settings)).slice(0,120).map(o=>`<tr><td>${escape(o.id)}</td><td>${escape(o.customer)}</td><td>${escape(commissionReason(o,settings))}</td></tr>`).join('')||'<tr><td colspan="3">Không có đơn bị loại.</td></tr>'}</tbody></table></div><h3>Người hưởng hoa hồng dự kiến</h3><div class="twrap"><table><thead><tr><th>Mã đơn</th><th>Người lập ERP</th><th>Người hưởng</th><th>Chính sách</th></tr></thead><tbody>${eligible.slice(0,150).map(o=>`<tr><td>${escape(o.id)}</td><td>${escape(o.erpStaff||o.staff)}</td><td>${escape(o.staff)}</td><td>${o.policyKind==='special'?'Riêng':'Chung'}</td></tr>`).join('')}</tbody></table></div><h3>Thống kê theo tuần</h3><table><thead><tr><th>Tuần</th><th class="money">Số đơn</th><th class="money">Hoa hồng tạm tính</th></tr></thead><tbody>${byWeek.map(w=>{let o=eligible.filter(x=>monthWeekKey(x.date)===w);return `<tr><td>${escape(monthWeekLabel(w))}</td><td class="money">${o.length}</td><td class="money">${money(summarize(o).bonus)}</td></tr>`}).join('')}</tbody></table>`;$('publish').disabled=!authorized;$('publishHint').textContent=authorized?'Đã kiểm tra xong: nút Công bố đã sẵn sàng. Vui lòng đối chiếu số liệu trước khi bấm.':'Hãy mở tab quản trị và nhập mật khẩu trước khi công bố.'}
 let pendingItems={};
+// Chỉ giữ một bản Excel mới nhất trong hàng chờ; dữ liệu đã công bố không bị xóa.
+let pendingVersion=null;
 async function submitPending(){
- const b=$('submitPending');if(!staged.length){$('feedback').textContent='Vui lòng chọn file Excel hợp lệ trước khi gửi.';return}
+ const b=$('submitPending');
+ if(!staged.length){$('feedback').textContent='Vui lòng chọn file Excel hợp lệ trước khi gửi.';return}
  if(!db){$('feedback').textContent='Chưa kết nối Realtime Database.';return}
- if(!confirm(`Gửi ${staged.length} đơn hàng lên danh sách chờ quản trị kiểm tra? Chưa công bố hoa hồng.`))return;
- try{b.disabled=true;b.textContent='Đang gửi…';
- const id='upload_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
- await set(ref(db,'ideco_commission_pending/'+id),{filename:activeFile,submittedAt:new Date().toISOString(),status:'pending',orders:staged});
- $('feedback').innerHTML='<div class="ok">✅ Đã gửi file Excel tới danh sách chờ duyệt. Chỉ sau khi quản trị công bố thì bảng thành quả mới thay đổi.</div>';
- }catch(e){$('feedback').textContent='Không gửi được: '+e.message+'. Cần kiểm tra quyền ghi vùng chờ trên Realtime Database.'}
+ if(!confirm(`THAY THẾ Excel chờ duyệt cũ bằng ${activeFile} (${staged.length} đơn)?\n\nCác tuần đã công bố sẽ KHÔNG bị xóa; mã đơn trùng chỉ tính một lần khi duyệt.`))return;
+ try{
+   b.disabled=true;b.textContent='Đang thay thế Excel…';
+   const payload={filename:activeFile||'Excel ERP',submittedAt:new Date().toISOString(),status:'pending',orders:staged,revision:Date.now()};
+   // Ghi đè cả nhánh chờ duyệt: tự loại bỏ bản Excel cũ, chỉ còn bản mới nhất.
+   await set(ref(db,'ideco_commission_pending'),{latest:payload});
+   window.activePendingId=null;pendingVersion=payload.revision;
+   $('feedback').innerHTML='<div class="ok">✅ Đã thay thế bản Excel chờ duyệt cũ bằng bản mới nhất trên Firebase Realtime Database. Dữ liệu thưởng đã công bố vẫn được giữ nguyên.</div>';
+ }catch(e){$('feedback').textContent='Không gửi được Excel: '+e.message+'. Kiểm tra quyền ghi Realtime Database.'}
  finally{b.disabled=false;b.textContent='3. Gửi Excel chờ quản trị duyệt'}
 }
-function renderPending(){const el=$('pendingList');const entries=Object.entries(pendingItems).filter(([id,p])=>p&&p.status==='pending').sort((a,b)=>(b[1].submittedAt||'').localeCompare(a[1].submittedAt||''));el.innerHTML=entries.length?entries.map(([id,p])=>`<div class="file" style="margin:8px 0;text-align:left"><b>${escape(p.filename||'Excel ERP')}</b> · ${escape(p.submittedAt||'')} · ${(p.orders||[]).length} đơn <button type="button" class="btn secondary" data-pending="${escape(id)}">Kiểm tra bản gửi</button></div>`).join(''):'Chưa có Excel chờ duyệt.';el.querySelectorAll('[data-pending]').forEach(b=>b.onclick=()=>{const id=b.dataset.pending,p=pendingItems[id];staged=p.orders||[];activeFile=p.filename||'ERP';renderStaffChoices();preview();$('pendingNotice').textContent='Đang xem bản gửi '+activeFile+'. Kiểm tra quy tắc rồi bấm Duyệt & công bố.';window.activePendingId=id;});}
+function renderPending(){
+ const el=$('pendingList');if(!el)return;
+ const item=pendingItems?.latest;
+ if(!item||item.status!=='pending'){el.innerHTML='Chưa có Excel chờ duyệt.';return}
+ el.innerHTML=`<div class="file" style="margin:8px 0;text-align:left"><b>${escape(item.filename||'Excel ERP')}</b> · ${escape(item.submittedAt||'')} · ${(item.orders||[]).length} đơn <span class="tag">BẢN MỚI NHẤT</span> <button type="button" class="btn secondary" id="openPendingLatest">Kiểm tra bản gửi</button></div>`;
+ $('openPendingLatest').onclick=()=>{
+   const latest=pendingItems?.latest;
+   if(!latest||latest.status!=='pending')return;
+   staged=latest.orders||[];activeFile=latest.filename||'ERP';pendingVersion=latest.revision;
+   window.activePendingId='latest';renderStaffChoices();preview();
+   $('pendingNotice').textContent='Đang xem Excel mới nhất: '+activeFile+'. Kiểm tra rồi bấm Duyệt & công bố.';
+ };
+}
 async function publish(){
  if(!staged.length||!authorized){$('publishHint').textContent='Cần mở quản trị và chọn file Excel.';return}
  if(!db){$('publishHint').textContent='Chưa kết nối Firebase Realtime Database.';return}
+ if(window.activePendingId==='latest'){
+   const current=(await get(ref(db,'ideco_commission_pending/latest'))).val();
+   if(!current||current.status!=='pending'||current.revision!==pendingVersion){alert('Excel chờ duyệt đã được thay bằng bản mới. Vui lòng chọn lại bản mới nhất trong quản trị.');return}
+ }
  const rules={...settings,...readRules()};const replaceWhole=$('replaceMonth').checked;
  const byMonth={};for(const o of staged){(byMonth[o.date.slice(0,7)]??=[]).push(o)}
  const months=Object.keys(byMonth).sort();
@@ -122,7 +144,7 @@ async function publish(){
    changes[location]={orders:[...next.values()],updatedAt:now,sourceFile:activeFile,updateMode:replaceWhole?'replace-month':'upsert-id'};
   }
   changes['ideco_commission_meta/settings']={...rules,updatedAt:now};
-  if(window.activePendingId){changes['ideco_commission_pending/'+window.activePendingId+'/status']='published';changes['ideco_commission_pending/'+window.activePendingId+'/publishedAt']=now}
+  if(window.activePendingId==='latest'){changes['ideco_commission_pending/latest']=null}
   await update(ref(db),changes);
   window.activePendingId=null;
   $('publishHint').textContent=`Đã công bố realtime ${months.length} tháng; cập nhật ${replaced} mã đơn; giữ nguyên ${retained} đơn đã khóa.`;
